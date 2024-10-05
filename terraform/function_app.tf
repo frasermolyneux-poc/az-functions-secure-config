@@ -45,7 +45,7 @@ resource "azurerm_linux_function_app" "fa" {
 }
 
 resource "azurerm_private_endpoint" "fa_pe" {
-  name                = format("pe-%s-azurewebsites", azurerm_linux_function_app.fa.name)
+  name                = format("pe-%s-sites", azurerm_linux_function_app.fa.name)
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
 
@@ -59,8 +59,9 @@ resource "azurerm_private_endpoint" "fa_pe" {
   }
 
   private_service_connection {
-    name                           = format("pe-%s-azurewebsites", azurerm_linux_function_app.fa.name)
+    name                           = format("pe-%s-sites", azurerm_linux_function_app.fa.name)
     private_connection_resource_id = azurerm_linux_function_app.fa.id
+    subresource_names              = ["sites"]
     is_manual_connection           = false
   }
 }
